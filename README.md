@@ -56,6 +56,9 @@ todoStore.onUpdate(function(event, target){
   console.log(target.attributes);
 });
 
+// Let's fetch all the data from the store
+todoStore.fetch();
+
 // Let's add some data to the store
 todoStore.create({ content: 'Set up the Lynx client', done: false });
 
@@ -65,6 +68,8 @@ todoStore.update(todos[0]._id, { done: true });
 // Let's remove some data from the store
 todoStore.remove(todos[0]._id);
 ```
+
+### Authentication
 
 ## Check out the demo
 

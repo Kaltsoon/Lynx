@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Todos</title>
+
+    <link rel="stylesheet" href="demo/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  </head>
+
+  <body>
+
+    <div class="container" style="padding-top: 25px;">
+      <h1 class="text-center">Todos</h1>
+
+      <div class="form-group">
+        <form id="todo-form">
+          <input type="text" class="form-control text-center" id="new-todo" placeholder="What needs to be done?" required>
+          <button type="submit" style="display: none">
+        </form>
+      </div>
+
+      <ul id="todos" style="padding-left: 0px">
+      </ul>
+    </div>
+
+    <script type="text/html" id="todo-list-template">
+      {{#each todos}}
+        <li class="list-group-item">
+          <input type="checkbox" style="margin-right: 10px" {{#if done}}checked{{/if}} class="toggle-todo" data-id="{{_id}}">
+          {{content}}
+
+          <button class="btn btn-danger btn-xs remove-todo pull-right" data-id="{{_id}}">Remove</button>
+        </li>
+      {{/each}}
+    </script>
+
+    <script src="client/dist/lynx-client.min.js"></script>
+    <script src="demo/dist/todos.min.js"></script>
+  </body>
+</html>

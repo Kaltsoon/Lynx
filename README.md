@@ -10,14 +10,16 @@ Start by running `npm install`.
 var lynx = require('./server/lynx-server');
 
 // Register a data store named "todo" and define what kind of objects it stores
-lynx.registerStore('todo', { content: String, done: Boolean });
+lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
 // Start the Lynx server
 lynx.release();
 ```
 
 ### Methods
 
-* **registerStore(name, itemAttributes)**, register a data store which contains objects with given properties
+* **registerStore(name, options)**, register a data store which contains objects with given properties
+ * **options.attributes**, attributes of the store's items
+ * **options.authenticate**, actions to authenticate
 * **release(options)**, start the Lynx server
   * **options.port** (number), port to listen to (default: 8080)
   * **options.mongo** (string), MongoDB URI (default: "mongodb://localhost/lynx")

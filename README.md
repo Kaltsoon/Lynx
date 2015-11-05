@@ -1,6 +1,6 @@
 # Lynx
 
-Lynx framework allows users to easily handle data in real time. Lynx server's offer Lynx client's access to defined data stores and will emit changes made to the stores back to the clients. Each data store contains an array of objects which can be manipulated with `create`, `update` and `remove` methods. 
+Lynx framework lets users easily handle data in real time. Lynx server's offer Lynx client's access to defined data stores and will emit changes made to the stores back to the clients. Each data store contains an array of objects which can be manipulated with `create`, `update` and `remove` actions. All the actions can be authenticated before being performed.
 
 Start by running `npm install`.
 

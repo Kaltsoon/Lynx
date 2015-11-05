@@ -66,4 +66,4 @@ todoStore.remove(todos[0]._id);
 
 ## Check out the demo
 
-Install (http-server)[https://www.npmjs.com/package/http-server]. Run `http-server .` in the folder with the source code.
+Install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.

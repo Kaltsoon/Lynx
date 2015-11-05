@@ -71,7 +71,14 @@ todoStore.remove(todos[0]._id);
 
 ### Authentication
 
-A new user can be created by calling the `createUser` method of `LynxClient`:
+Store's actions can require authentication. Authenticated actions can be set while registering a store:
+
+```javascript
+// ...
+lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+```
+
+A new user can be created by calling the `createUser` method of the `LynxClient`:
 
 ```javascript
 // ...
@@ -79,6 +86,27 @@ client.createUser({ username: 'bobcat', password: 'bobcat123' })
  .then(function(data){
   console.log('We have a new user!'); 
  });
+```
+
+User will be automatically authenticated after creating a new user.
+
+After user has been created, user can authenticate herself by calling the `authenticate` method:
+
+```javascript
+// ...
+client.authenticate({ username: 'bobcat', password: 'bobcat123' })
+ .then(function(data){
+  console.log('Bobcat has been authenticated!'); 
+ });
+```
+
+To notice unauthorized use of a store, a `onUnAuthorized` callback can be defined:
+
+```javascript
+// ...
+todoStore.onUnAuthorized(function(){
+  console.log('We have a trouble maker over here!');
+});
 ```
 
 ## Check out the demo

@@ -109,6 +109,13 @@ todoStore.onUnAuthorized(function(){
 });
 ```
 
+Users can unauthenticate themselves by calling the `unauthenticate` method:
+
+```javascript
+// ...
+client.unauthenticate();
+```
+
 ## Check out the demo
 
 Install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.

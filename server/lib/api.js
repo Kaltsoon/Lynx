@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 
@@ -5,11 +6,19 @@ var Store = require('./store');
 var Auth = require('./auth');
 var server = require('./server');
 
+function verifyStore(req, res, next){
+  var storeName = req.params.store;
+
+  if(Store.getRegisteredStores().indexOf(storeName) < 0 || !mongoose.models[storeName]){
+    res.status(404).json({ message: 'NO_SUCH_STORE' });
+  }else{
+    next();
+  }
+}
+
 router.post('/_register', function(req, res, next){
   var userModel = Auth.getUserModel();
   var newUser = new userModel(req.body);
-
-  console.log(req.body);
 
   newUser.save()
     .then(
@@ -39,14 +48,14 @@ router.post('/_authenticate', function(req, res, next){
     .catch(err => res.status(401).json({ message: err }));
 });
 
-router.get('/:store', Auth.verifyAuthentication('fetch'), function(req, res, next){
+router.get('/:store', verifyStore, Auth.verifyAuthentication('fetch'), function(req, res, next){
   var targetStore = req.params.store;
 
   Store.getAll(targetStore)
     .then(items => res.json(items));
 });
 
-router.post('/:store', Auth.verifyAuthentication('create'), function(req, res, next){
+router.post('/:store', verifyStore, Auth.verifyAuthentication('create'), function(req, res, next){
   var targetStore = req.params.store;
   var item = req.body;
 
@@ -57,7 +66,7 @@ router.post('/:store', Auth.verifyAuthentication('create'), function(req, res, n
     });
 });
 
-router.delete('/:store/:id', Auth.verifyAuthentication('remove'), function(req, res, next){
+router.delete('/:store/:id', verifyStore, Auth.verifyAuthentication('remove'), function(req, res, next){
   var targetStore = req.params.store;
   var itemId = req.params.id;
 
@@ -68,7 +77,7 @@ router.delete('/:store/:id', Auth.verifyAuthentication('remove'), function(req, 
     });
 });
 
-router.put('/:store/:id', Auth.verifyAuthentication('update'), function(req, res, next){
+router.put('/:store/:id', verifyStore, Auth.verifyAuthentication('update'), function(req, res, next){
   var targetStore = req.params.store;
   var itemId = req.params.id;
   var attributes = req.body;

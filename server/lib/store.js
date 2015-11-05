@@ -3,7 +3,13 @@ var mongoose = require('mongoose');
 var Store = (function(){
   var self = {};
 
+  var registeredStores = [];
+
   self.registerStore = function(name, attributes){
+    if(name === '_lynx_user'){
+      throw '"_lynx_user" can\'t be used as a store name!'
+    }
+
     if(typeof name === 'undefined' || typeof name !== 'string'){
       throw 'No name provided for the store!';
     }
@@ -12,7 +18,13 @@ var Store = (function(){
       throw 'No attributes provided for the store';
     }
 
+    registeredStores.push(name);
+
     mongoose.model(name.toLowerCase(), attributes);
+  }
+
+  self.getRegisteredStores = function(){
+    return registeredStores;
   }
 
   self.getAll = function(storeName){

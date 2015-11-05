@@ -18,10 +18,12 @@
   "homepage": "https://github.com/Kaltsoon/Lynx#readme",
   "dependencies": {
     "axios": "^0.7.0",
+    "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "handlebars": "^4.0.4",
+    "jsonwebtoken": "^5.4.1",
     "lodash": "^3.10.1",
     "mongoose": "^4.2.4",
     "pubsub-js": "^1.5.3",

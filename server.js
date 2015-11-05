@@ -1,4 +1,4 @@
 var lynx = require('./server/lynx-server');
 
-lynx.registerStore('todo', { content: String, done: Boolean });
+lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['create', 'remove', 'update', 'fetch'] });
 lynx.release();

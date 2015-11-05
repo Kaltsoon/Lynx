@@ -71,6 +71,16 @@ todoStore.remove(todos[0]._id);
 
 ### Authentication
 
+A new user can be created by calling the `createUser` method of `LynxClient`:
+
+```javascript
+// ...
+client.createUser({ username: 'bobcat', password: 'bobcat123' })
+ .then(function(data){
+  console.log('We have a new user!'); 
+ });
+```
+
 ## Check out the demo
 
 Install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.

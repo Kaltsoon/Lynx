@@ -10,14 +10,16 @@ Start by running `npm install`.
 var lynx = require('./server/lynx-server');
 
 // Register a data store named "todo" and define what kind of objects it stores
-lynx.registerStore('todo', { content: String, done: Boolean });
+lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
 // Start the Lynx server
 lynx.release();
 ```
 
 ### Methods
 
-* **registerStore(name, itemAttributes)**, register a data store which contains objects with given properties
+* **registerStore(name, options)**, register a data store which contains objects with given properties
+ * **options.attributes**, attributes of the store's items
+ * **options.authenticate**, actions to authenticate
 * **release(options)**, start the Lynx server
   * **options.port** (number), port to listen to (default: 8080)
   * **options.mongo** (string), MongoDB URI (default: "mongodb://localhost/lynx")
@@ -54,6 +56,9 @@ todoStore.onUpdate(function(event, target){
   console.log(target.attributes);
 });
 
+// Let's fetch all the data from the store
+todoStore.fetch();
+
 // Let's add some data to the store
 todoStore.create({ content: 'Set up the Lynx client', done: false });
 
@@ -62,6 +67,53 @@ todoStore.update(todos[0]._id, { done: true });
 
 // Let's remove some data from the store
 todoStore.remove(todos[0]._id);
+```
+
+### Authentication
+
+Store's actions can require authentication. Authenticated actions can be set while registering a store:
+
+```javascript
+// ...
+lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+```
+
+A new user can be created by calling the `createUser` method of the `LynxClient`:
+
+```javascript
+// ...
+client.createUser({ username: 'bobcat', password: 'bobcat123' })
+ .then(function(data){
+  console.log('We have a new user!'); 
+ });
+```
+
+User will be automatically authenticated after creating a new user.
+
+After user has been created, user can authenticate herself by calling the `authenticate` method:
+
+```javascript
+// ...
+client.authenticate({ username: 'bobcat', password: 'bobcat123' })
+ .then(function(data){
+  console.log('Bobcat has been authenticated!'); 
+ });
+```
+
+To notice unauthorized use of a store, a `onUnAuthorized` callback can be defined:
+
+```javascript
+// ...
+todoStore.onUnAuthorized(function(){
+  console.log('We have a trouble maker over here!');
+});
+```
+
+Users can unauthenticate themselves by calling the `unauthenticate` method:
+
+```javascript
+// ...
+client.unauthenticate();
 ```
 
 ## Check out the demo

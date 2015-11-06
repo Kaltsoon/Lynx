@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var _ = require('lodash');
 
 var server = require('./lib/server');
 var Store = require('./lib/store');
@@ -12,12 +13,24 @@ var LynxServer = (function(){
   var self = {};
 
   self.release = function(options){
+    if(_.keys(Auth.getAuthentications).length > 0 && !Auth.getSecret()){
+      throw 'No authentication secret set!';
+    }
+
     var lynxOptions = Object.assign(defaultOptions, options);
 
     initApi();
 
     server.server.listen(lynxOptions.port);
     mongoose.connect(lynxOptions.mongo);
+  }
+
+  self.setAuthenticationSecret = function(secret){
+    if(typeof secret === 'undefined' || typeof secret !== 'string'){
+      throw 'Secret must be a string!';
+    }
+
+    Auth.setSecret(secret);
   }
 
   self.registerStore = function(name, options){

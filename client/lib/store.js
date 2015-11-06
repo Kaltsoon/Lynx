@@ -14,8 +14,6 @@ function Store(options){
   this._name = options.name.toLowerCase();
   this._events = pubsub;
   this._data = [];
-
-  this._initSocket();
 }
 
 Store.prototype.onChange = function(callback){
@@ -167,6 +165,8 @@ Store.prototype.fetch = function(){
 
   this._getData()
     .then(function(data){
+      context._initSocket();
+
       context._data = data;
       context._events.publish(CHANGE_EVENT);
     });
@@ -201,7 +201,7 @@ Store.prototype._initSocket = function(){
   var server = this._lynx.getServer();
   var context = this;
 
-  this._socket = io('http://' + server.host + ':' + server.port, { query: 'store=' + context._name });
+  this._socket = io('http://' + server.host + ':' + server.port, { query: 'store=' + context._name + '&token=' + context._getToken() });
 
   this._socket.on('lynx', function(transaction) {
     switch(transaction.type){
@@ -216,6 +216,12 @@ Store.prototype._initSocket = function(){
         break;
       default:
         // nop
+    }
+  });
+
+  this._socket.on('lynx_error', function(err){
+    if(err.message === 'INVALID_TOKEN'){
+      context.publish(UNAUTHORIZED_EVENT);
     }
   });
 }

@@ -8,7 +8,7 @@ var Auth = (function(){
   var self = {};
 
   var authentications = {};
-  var jwt_secret = 'lk7IqejFTEqaIep8guBE16Mg5JWpZtHj';
+  var jwtSecret = null;
   var userModel = null;
 
   self.createUserModel = function(){
@@ -76,13 +76,35 @@ var Auth = (function(){
   }
 
   self.setSecret = function(secret){
-    jwt_secret = secret;
+    jwtSecret = secret;
+  }
+
+  self.getSecret = function(){
+    return jwtSecret;
   }
 
   self.createTokenForUser = function(user){
-    return jwt.sign(user, jwt_secret, {
+    return jwt.sign(user, jwtSecret, {
       expiresIn: 60 * 60 * 12
     });
+  }
+
+  self.verifyToken = function(token){
+    var deferred = q.defer();
+
+    if(typeof token === 'undefined' || typeof token !== 'string'){
+      deferred.reject();
+    }
+
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+      if (err) {
+        deferred.reject();
+      } else {
+        deferred.resolve();
+      }
+    });
+
+    return deferred.promise;
   }
 
   self.verifyAuthentication = function(action){
@@ -102,7 +124,7 @@ var Auth = (function(){
         var bearer = bearerHeader.split(' ');
         var bearerToken = bearer[1];
 
-        jwt.verify(bearerToken, jwt_secret, function(err, decoded) {
+        jwt.verify(bearerToken, jwtSecret, function(err, decoded) {
           if (err) {
             res.status(401).json({ message: 'INVALID_TOKEN' });
           } else {

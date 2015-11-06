@@ -78,6 +78,8 @@ Store's actions can require authentication. Authenticated actions can be set whi
 ```javascript
 // ...
 lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+// Don't forget the secret!
+lynx.setAuthenticationSecret('lk7IqejFTEqaIep8guBE16Mg5JWpZtHj');
 ```
 
 A new user can be created by calling the `createUser` method of the `LynxClient`:

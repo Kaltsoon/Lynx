@@ -11,6 +11,8 @@ var lynx = require('./server/lynx-server');
 
 // Register a data store named "todo" and define what kind of objects it stores
 lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+// Set a secret for authentication (required if any authentication set!)
+lynx.setAuthenticationSecret('lk7IqejFTEqaIep8guBE16Mg5JWpZtHj');
 // Start the Lynx server
 lynx.release();
 ```
@@ -56,7 +58,7 @@ todoStore.onUpdate(function(event, target){
   console.log(target.attributes);
 });
 
-// Let's fetch all the data from the store
+// Let's fetch all the data from the store (required for connecting to the store!)
 todoStore.fetch();
 
 // Let's add some data to the store

@@ -40,7 +40,7 @@ var todos = [];
 // Add a change listener to the todo store
 todoStore.onChange(function(){
   console.log('Todo store has changed!');
-  var todos = todoStore.getAll();
+  todos = todoStore.getAll();
   console.log(todos);
 });
 

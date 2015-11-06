@@ -6,12 +6,12 @@ var Store = (function(){
   var registeredStores = [];
 
   self.registerStore = function(name, attributes){
-    if(name === '_lynx_user'){
-      throw '"_lynx_user" can\'t be used as a store name!'
+    if(typeof name === 'undefined' || typeof name !== 'string' || name === ''){
+      throw 'No name provided for the store!';
     }
 
-    if(typeof name === 'undefined' || typeof name !== 'string'){
-      throw 'No name provided for the store!';
+    if(name.charAt(0) === '_'){
+      throw 'Store name can\'t start with "_"!';
     }
 
     if(typeof attributes !== 'object' || attributes == null){

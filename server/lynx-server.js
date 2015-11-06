@@ -13,7 +13,7 @@ var LynxServer = (function(){
   var self = {};
 
   self.release = function(options){
-    if(_.keys(Auth.getAuthentications).length > 0 && !Auth.getSecret()){
+    if(_.keys(Auth.getAuthentications()).length > 0 && !Auth.getSecret()){
       throw 'No authentication secret set!';
     }
 

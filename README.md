@@ -122,4 +122,4 @@ client.unauthenticate();
 
 ## Check out the demo
 
-Install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.
+Start `mongod` and after that the demo server by running `node server` in the folder with the source code. Then install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.

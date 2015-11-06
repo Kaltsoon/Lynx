@@ -1,6 +1,6 @@
 # Lynx
 
-Lynx framework allows users to easily handle data in real time. Lynx server's offer Lynx client's access to defined data stores and will emit changes made to the stores back to the clients. Each data store contains an array of objects which can be manipulated with `create`, `update` and `remove` methods. 
+Lynx framework lets users easily handle data in real time. Lynx server's offer Lynx client's access to defined data stores and will emit changes made to the stores back to the clients. Each data store contains an array of objects which can be manipulated with `create`, `update` and `remove` actions. All the actions can be authenticated before being performed.
 
 Start by running `npm install`.
 
@@ -11,6 +11,8 @@ var lynx = require('./server/lynx-server');
 
 // Register a data store named "todo" and define what kind of objects it stores
 lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+// Set a secret for authentication (required if any authentication set!)
+lynx.setAuthenticationSecret('lk7IqejFTEqaIep8guBE16Mg5JWpZtHj');
 // Start the Lynx server
 lynx.release();
 ```
@@ -56,7 +58,7 @@ todoStore.onUpdate(function(event, target){
   console.log(target.attributes);
 });
 
-// Let's fetch all the data from the store
+// Let's fetch all the data from the store (required for connecting to the store!)
 todoStore.fetch();
 
 // Let's add some data to the store
@@ -76,6 +78,8 @@ Store's actions can require authentication. Authenticated actions can be set whi
 ```javascript
 // ...
 lynx.registerStore('todo', { attributes: { content: String, done: Boolean }, authenticate: ['fetch', 'create', 'update', 'remove'] });
+// Don't forget the secret!
+lynx.setAuthenticationSecret('lk7IqejFTEqaIep8guBE16Mg5JWpZtHj');
 ```
 
 A new user can be created by calling the `createUser` method of the `LynxClient`:
@@ -118,4 +122,4 @@ client.unauthenticate();
 
 ## Check out the demo
 
-Install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.
+Start `mongod` and after that the demo server by running `node server` in the folder with the source code. Then install [http-server](https://www.npmjs.com/package/http-server). Run `bower install ` and after that `http-server .` in the folder with the source code.
